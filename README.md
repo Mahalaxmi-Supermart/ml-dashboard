@@ -71,3 +71,5 @@ export default defineConfig([
   },
 ])
 ```
+
+https://mui.com/store/previews/minimal-dashboard/
