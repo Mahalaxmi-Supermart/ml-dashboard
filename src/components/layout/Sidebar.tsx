@@ -1,6 +1,7 @@
 import CategoryOutlined from '@mui/icons-material/CategoryOutlined'
 import Inventory2Outlined from '@mui/icons-material/Inventory2Outlined'
 import ShoppingBagOutlined from '@mui/icons-material/ShoppingBagOutlined'
+import ConfirmationNumberOutlined from '@mui/icons-material/ConfirmationNumberOutlined'
 import { Drawer, List, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { sidebarActiveBg } from '../../theme/theme'
@@ -35,6 +36,7 @@ export function Sidebar() {
   const productsSelected = pathname.startsWith('/products')
   const categoriesSelected = pathname.startsWith('/categories')
   const ordersSelected = pathname.startsWith('/orders')
+  const couponsSelected = pathname.startsWith('/coupons')
 
   return (
     <Drawer
@@ -85,6 +87,17 @@ export function Sidebar() {
             <ShoppingBagOutlined fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Orders" slotProps={{ primary: { sx: { fontSize: '0.95rem' } } }} />
+        </ListItemButton>
+        <ListItemButton
+          component={RouterLink}
+          to="/coupons"
+          selected={couponsSelected}
+          sx={itemSx}
+        >
+          <ListItemIcon>
+            <ConfirmationNumberOutlined fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Coupons" slotProps={{ primary: { sx: { fontSize: '0.95rem' } } }} />
         </ListItemButton>
       </List>
     </Drawer>

@@ -4,6 +4,9 @@ import { CategoriesPage } from '../pages/categories/CategoriesPage'
 import { CategoryEditPage } from '../pages/categories/CategoryEditPage'
 import { CategoryNewPage } from '../pages/categories/CategoryNewPage'
 import { OrdersPage } from '../pages/orders/OrdersPage'
+import { CouponsPage } from '../pages/coupons/CouponsPage'
+import { CouponNewPage } from '../pages/coupons/CouponNewPage'
+import { CouponEditPage } from '../pages/coupons/CouponEditPage'
 import { ProductEditPage } from '../pages/products/ProductEditPage'
 import { ProductNewPage } from '../pages/products/ProductNewPage'
 import { ProductVariantEditPage } from '../pages/products/ProductVariantEditPage'
@@ -37,6 +40,9 @@ export function AppRouter() {
         <Route path="categories/new" element={<CategoryNewPage />} />
         <Route path="categories/:categoryId/edit" element={<CategoryEditPage />} />
         <Route path="orders" element={<OrdersPage />} />
+        <Route path="coupons" element={<CouponsPage />} />
+        <Route path="coupons/new" element={<CouponNewPage />} />
+        <Route path="coupons/:id/edit" element={<CouponEditPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
