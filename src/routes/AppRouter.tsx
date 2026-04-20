@@ -17,6 +17,8 @@ import { MembersPage } from '../pages/members/MembersPage'
 import { MemberNewPage } from '../pages/members/MemberNewPage'
 import { MemberEditPage } from '../pages/members/MemberEditPage'
 import { InvitesPage } from '../pages/members/InvitesPage'
+import { CustomersPage } from '../pages/customers/CustomersPage'
+import { CustomerDetailPage } from '../pages/customers/CustomerDetailPage'
 import { PrivateRoute } from './PrivateRoute'
 
 export function AppRouter() {
@@ -51,6 +53,8 @@ export function AppRouter() {
         <Route path="members/new" element={<MemberNewPage />} />
         <Route path="members/:id/edit" element={<MemberEditPage />} />
         <Route path="invites" element={<InvitesPage />} />
+        <Route path="customers" element={<CustomersPage />} />
+        <Route path="customers/:id" element={<CustomerDetailPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

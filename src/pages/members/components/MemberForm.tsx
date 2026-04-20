@@ -45,13 +45,14 @@ export function MemberForm({
 
   const onInternalSubmit = (data: MemberFormValues) => {
     if (initialValues) {
-      const changedData: any = {}
+      const changedData: Partial<MemberFormValues> = {}
       for (const key in dirtyFields) {
         if (Object.prototype.hasOwnProperty.call(dirtyFields, key)) {
-          changedData[key] = (data as any)[key]
+          const k = key as keyof MemberFormValues
+          ;(changedData as Record<string, any>)[k] = data[k]
         }
       }
-      onSubmit(changedData as Partial<MemberFormValues>)
+      onSubmit(changedData)
     } else {
       onSubmit(data)
     }
@@ -148,6 +149,30 @@ export function MemberForm({
                         error={!!error}
                         helperText={error?.message}
                         disabled={!!initialValues}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Controller
+                    name="phone_number"
+                    control={control}
+                    rules={{
+                      required: 'Phone number is required',
+                      pattern: {
+                        value: /^[0-9]{10}$/,
+                        message: 'Enter exactly 10 digits',
+                      },
+                    }}
+                    render={({ field, fieldState: { error } }) => (
+                      <TextField
+                        {...field}
+                        label="Phone Number"
+                        fullWidth
+                        required
+                        error={!!error}
+                        helperText={error?.message}
+                        slotProps={{ htmlInput: { maxLength: 10 } }}
                       />
                     )}
                   />

@@ -4,6 +4,7 @@ import ShoppingBagOutlined from '@mui/icons-material/ShoppingBagOutlined'
 import ConfirmationNumberOutlined from '@mui/icons-material/ConfirmationNumberOutlined'
 import PeopleOutlined from '@mui/icons-material/PeopleOutlined'
 import EmailOutlined from '@mui/icons-material/EmailOutlined'
+import PersonOutlined from '@mui/icons-material/PersonOutlined'
 import { Drawer, List, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { sidebarActiveBg } from '../../theme/theme'
@@ -41,6 +42,7 @@ export function Sidebar() {
   const couponsSelected = pathname.startsWith('/coupons')
   const membersSelected = pathname.startsWith('/members')
   const invitesSelected = pathname.startsWith('/invites')
+  const customersSelected = pathname.startsWith('/customers')
 
   return (
     <Drawer
@@ -124,6 +126,17 @@ export function Sidebar() {
             <EmailOutlined fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Invites" slotProps={{ primary: { sx: { fontSize: '0.95rem' } } }} />
+        </ListItemButton>
+        <ListItemButton
+          component={RouterLink}
+          to="/customers"
+          selected={customersSelected}
+          sx={itemSx}
+        >
+          <ListItemIcon>
+            <PersonOutlined fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Customers" slotProps={{ primary: { sx: { fontSize: '0.95rem' } } }} />
         </ListItemButton>
       </List>
     </Drawer>

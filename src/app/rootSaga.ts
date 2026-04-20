@@ -5,6 +5,7 @@ import { productsWatcher } from '../redux/sagas/productsSaga'
 import { couponsWatcher } from '../redux/sagas/couponsSaga'
 import { membersWatcher } from '../redux/sagas/membersSaga'
 import { invitesWatcher } from '../redux/sagas/invitesSaga'
+import { customersWatcher } from '../redux/sagas/customersSaga'
 
 export default function* rootSaga() {
   yield all([
@@ -14,5 +15,6 @@ export default function* rootSaga() {
     couponsWatcher(),
     membersWatcher(),
     invitesWatcher(),
+    customersWatcher(),
   ])
 }
