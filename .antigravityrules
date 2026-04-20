@@ -1,0 +1,128 @@
+# Antigravity Rules — E-Commerce Dashboard
+> Stack: React + Vite · Material UI v6 · Redux Toolkit (createSlice) + Redux-Saga · React Hook Form v7
+
+---
+
+## Brand Colors
+- Dark Green: #21622A
+- Green: #3A9A48
+- Orange: #F37326
+
+---
+
+## Project Structure
+```
+src/
+├── app/              # store.ts, rootReducer.ts, rootSaga.ts
+├── components/
+│   ├── common/       # DataTable, ConfirmDialog, StatusChip, PageLoader, FormDialog, ErrorAlert
+│   └── layout/       # AppLayout.tsx, Sidebar.tsx, TopBar.tsx
+├── pages/<n>/
+│   ├── components/   # page-scoped UI
+│   ├── hooks/        # page-scoped hooks
+│   ├── <n>Page.tsx
+│   └── <n>Types.ts   # domain types + slice State interface
+├── redux/
+│   ├── reducers/     # <n>Slice.ts
+│   ├── sagas/        # <n>Saga.ts
+│   └── services/     # <n>Service.ts  (pure axios, NO Redux imports)
+├── hooks/            # useAppDispatch, useAppSelector
+├── routes/           # AppRouter.tsx, PrivateRoute.tsx
+├── services/         # axiosInstance.ts
+├── theme/            # theme.ts
+└── types/            # common.ts  → AsyncState<T>
+```
+
+---
+
+## Naming Conventions
+- **Page components**: PascalCase + `Page` suffix (e.g., `OrdersPage.tsx`)
+- **Hooks**: camelCase + `use` prefix (e.g., `useOrderFilters.ts`)
+- **Slices**: camelCase + `Slice` suffix (e.g., `ordersSlice.ts`)
+- **Sagas**: camelCase + `Saga` suffix (e.g., `ordersSaga.ts`)
+- **Services**: camelCase + `Service` suffix (e.g., `ordersService.ts`)
+- **Types files**: camelCase + `Types` suffix (e.g., `ordersTypes.ts`)
+- **Redux actions**: `sliceName/verbNoun` (e.g., `orders/fetchListRequest`)
+
+---
+
+## AsyncState — Core Pattern
+Defined in `src/types/common.ts`:
+```ts
+export interface AsyncState<T> {
+  pending: boolean;
+  data: T;
+  error: string | null;
+}
+```
+**Rules:**
+- One `AsyncState<T>` per API call. Never share `pending`/`error` across operations.
+- **State key naming:**
+  - Fetch list → `<noun>List` (e.g., `ordersList`)
+  - Fetch count → `<noun>Count`
+  - Fetch one → `selected<Noun>`
+  - Create/Update/Delete → `create<Noun>`, `update<Noun>`, `delete<Noun>`
+
+---
+
+## Slice Rules
+- Always use `createSlice`.
+- Each operation gets 3 actions: `*Request`, `*Success`, `*Failure`.
+- Non-async UI state (pagination, filters) should be flat on the slice.
+- Provide `clear*` actions for all mutation states.
+- Type all action payloads with `PayloadAction<T>`.
+
+---
+
+## Saga Rules
+- One worker function per action using `call` and `put`.
+- Watchers must use `takeLatest` for fetches/mutations.
+- Catch blocks must dispatch `*Failure` with error messages.
+- Never `console.log` errors in sagas; dispatch failure actions instead.
+- Export one `*Watcher` function per file and register in `app/rootSaga.ts`.
+
+---
+
+## Service Layer Rules
+- Pure async functions only (no Redux imports).
+- Use `axiosInstance` from `services/axiosInstance.ts`.
+- Return typed data directly.
+
+---
+
+## Forms (React Hook Form v7)
+- Always use `Controller` with MUI inputs.
+- Pass `defaultValues` via props.
+- Map `loading` props to `<key>.pending`.
+- Render errors using `<ErrorAlert>`.
+
+---
+
+## Error & Loading Rules
+1. Pass `<key>.pending` to the triggering UI element (button/table).
+2. Render `<ErrorAlert error={...} />` near the owning UI element.
+3. Dispatch `clear*` on dialog close to reset mutation state.
+4. Never leave stale data/errors in state across re-opens.
+
+---
+
+## Checklist for New Features
+- [ ] Create `pages/<n>/` structure.
+- [ ] Add `redux/reducers/<n>Slice.ts`.
+- [ ] Add `redux/sagas/<n>Saga.ts`.
+- [ ] Add `redux/services/<n>Service.ts`.
+- [ ] Register reducer and saga watcher.
+- [ ] Add route and sidebar item.
+- [ ] Ensure all forms use `Controller`.
+- [ ] Use typed hooks (`useAppDispatch`, `useAppSelector`).
+
+---
+
+## DO / DON'T
+- ✅ **DO**: Use one `AsyncState<T>` per API call.
+- ✅ **DO**: Put slices in `redux/reducers/` and sagas in `redux/sagas/`.
+- ✅ **DO**: Use `takeLatest` for watchers.
+- ❌ **DON'T**: Share `pending`/`error` across operations.
+- ❌ **DON'T**: Define types inline in components (use `<n>Types.ts`).
+- ❌ **DON'T**: Put axios calls in sagas or components (use services).
+- ❌ **DON'T**: Use `any` in action payloads.

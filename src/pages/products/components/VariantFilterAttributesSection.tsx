@@ -1,5 +1,5 @@
 import AddOutlined from '@mui/icons-material/AddOutlined'
-import DeleteOutlineOutlined from '@mui/icons-material/DeleteOutlineOutlined'
+import DeleteOutlined from '@mui/icons-material/DeleteOutlined'
 import Autocomplete from '@mui/material/Autocomplete'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -465,7 +465,7 @@ export const VariantFilterAttributesSection = forwardRef<
                     disabled={disabled || filterSavePending}
                     size="small"
                   >
-                    <DeleteOutlineOutlined />
+                    <DeleteOutlined />
                   </IconButton>
                 </Grid>
               </Grid>
