@@ -16,6 +16,7 @@ export interface DataTableColumn<T> {
   id: string
   label: string
   align?: 'left' | 'right' | 'center'
+  width?: string | number
   render?: (row: T) => ReactNode
 }
 
@@ -54,14 +55,20 @@ export function DataTable<T extends { id: string | number }>({
     >
       {loading && <LinearProgress sx={{ height: 3 }} />}
       <TableContainer sx={{ minHeight: 400 }}>
-        <Table stickyHeader>
+        <Table stickyHeader sx={{ tableLayout: 'fixed' }}>
           <TableHead>
             <TableRow>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  sx={{ bgcolor: 'grey.50', fontWeight: 600 }}
+                  sx={{
+                    bgcolor: 'grey.50',
+                    fontWeight: 600,
+                    width: column.width,
+                    minWidth: column.width,
+                    maxWidth: column.width,
+                  }}
                 >
                   {column.label}
                 </TableCell>
@@ -84,7 +91,18 @@ export function DataTable<T extends { id: string | number }>({
                   sx={{ cursor: onRowClick ? 'pointer' : 'default' }}
                 >
                   {columns.map((column) => (
-                    <TableCell key={column.id} align={column.align}>
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      sx={{
+                        width: column.width,
+                        minWidth: column.width,
+                        maxWidth: column.width,
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
                       {column.render ? column.render(row) : (row as any)[column.id]}
                     </TableCell>
                   ))}

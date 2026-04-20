@@ -2,6 +2,8 @@ import CategoryOutlined from '@mui/icons-material/CategoryOutlined'
 import Inventory2Outlined from '@mui/icons-material/Inventory2Outlined'
 import ShoppingBagOutlined from '@mui/icons-material/ShoppingBagOutlined'
 import ConfirmationNumberOutlined from '@mui/icons-material/ConfirmationNumberOutlined'
+import PeopleOutlined from '@mui/icons-material/PeopleOutlined'
+import EmailOutlined from '@mui/icons-material/EmailOutlined'
 import { Drawer, List, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { sidebarActiveBg } from '../../theme/theme'
@@ -37,6 +39,8 @@ export function Sidebar() {
   const categoriesSelected = pathname.startsWith('/categories')
   const ordersSelected = pathname.startsWith('/orders')
   const couponsSelected = pathname.startsWith('/coupons')
+  const membersSelected = pathname.startsWith('/members')
+  const invitesSelected = pathname.startsWith('/invites')
 
   return (
     <Drawer
@@ -98,6 +102,28 @@ export function Sidebar() {
             <ConfirmationNumberOutlined fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Coupons" slotProps={{ primary: { sx: { fontSize: '0.95rem' } } }} />
+        </ListItemButton>
+        <ListItemButton
+          component={RouterLink}
+          to="/members"
+          selected={membersSelected}
+          sx={itemSx}
+        >
+          <ListItemIcon>
+            <PeopleOutlined fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Delivery Partners" slotProps={{ primary: { sx: { fontSize: '0.95rem' } } }} />
+        </ListItemButton>
+        <ListItemButton
+          component={RouterLink}
+          to="/invites"
+          selected={invitesSelected}
+          sx={itemSx}
+        >
+          <ListItemIcon>
+            <EmailOutlined fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Invites" slotProps={{ primary: { sx: { fontSize: '0.95rem' } } }} />
         </ListItemButton>
       </List>
     </Drawer>

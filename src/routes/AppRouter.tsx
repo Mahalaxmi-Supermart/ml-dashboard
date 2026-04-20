@@ -13,6 +13,10 @@ import { ProductVariantEditPage } from '../pages/products/ProductVariantEditPage
 import { ProductVariantNewPage } from '../pages/products/ProductVariantNewPage'
 import { ProductsPage } from '../pages/products/ProductsPage'
 import { LoginPage } from '../pages/login/LoginPage'
+import { MembersPage } from '../pages/members/MembersPage'
+import { MemberNewPage } from '../pages/members/MemberNewPage'
+import { MemberEditPage } from '../pages/members/MemberEditPage'
+import { InvitesPage } from '../pages/members/InvitesPage'
 import { PrivateRoute } from './PrivateRoute'
 
 export function AppRouter() {
@@ -43,6 +47,10 @@ export function AppRouter() {
         <Route path="coupons" element={<CouponsPage />} />
         <Route path="coupons/new" element={<CouponNewPage />} />
         <Route path="coupons/:id/edit" element={<CouponEditPage />} />
+        <Route path="members" element={<MembersPage />} />
+        <Route path="members/new" element={<MemberNewPage />} />
+        <Route path="members/:id/edit" element={<MemberEditPage />} />
+        <Route path="invites" element={<InvitesPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

@@ -1,50 +1,30 @@
 import { useState, useEffect, useMemo } from 'react'
-import AddIcon from '@mui/icons-material/Add'
 import MoreVert from '@mui/icons-material/MoreVert'
-import { Breadcrumbs, Button, Card, IconButton, Link, Menu, MenuItem, Stack, Typography } from '@mui/material'
+import { Breadcrumbs, Card, IconButton, Link, Menu, MenuItem, Stack, Typography } from '@mui/material'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { DataTable, type DataTableColumn } from '../../components/common/DataTable'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
-import { fetchPageRequest } from '../../redux/reducers/couponsSlice'
-import type { Coupon } from './couponsTypes'
+import { fetchPageRequest } from '../../redux/reducers/membersSlice'
+import type { Member } from './membersTypes'
 
-export function CouponsPage() {
+export function MembersPage() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { couponsList, couponsCount, lastQuery } = useAppSelector((state) => state.coupons)
+  const { membersList, membersCount, lastQuery } = useAppSelector((state) => state.members)
 
-  const [menuAnchor, setMenuAnchor] = useState<{ el: HTMLElement; couponId: number } | null>(null)
+  const [menuAnchor, setMenuAnchor] = useState<{ el: HTMLElement; memberId: number } | null>(null)
 
   useEffect(() => {
     dispatch(fetchPageRequest(lastQuery))
-  }, [dispatch, lastQuery])
+  }, [dispatch])
 
   const totalLabel =
-    couponsCount.pending && couponsCount.data === 0
+    membersCount.pending && membersCount.data === 0
       ? '…'
-      : `${couponsCount.data.toLocaleString()} total`
+      : `${membersCount.data.toLocaleString()} total`
 
-  const columns = useMemo<DataTableColumn<Coupon>[]>(
+  const columns = useMemo<DataTableColumn<Member>[]>(
     () => [
-      {
-        id: 'code',
-        label: 'Code',
-        width: 150,
-        render: (row) => (
-          <Typography
-            variant="body2"
-            sx={{
-              fontWeight: 600,
-              color: 'primary.main',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            {row.code}
-          </Typography>
-        ),
-      },
       {
         id: 'name',
         label: 'Name',
@@ -52,50 +32,27 @@ export function CouponsPage() {
         render: (row) => (
           <Typography
             variant="body2"
+            sx={{
+              fontWeight: 600,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {row.first_name} {row.last_name}
+          </Typography>
+        ),
+      },
+      {
+        id: 'email_id',
+        label: 'Email',
+        width: 250,
+        render: (row) => (
+          <Typography
+            variant="body2"
             sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
           >
-            {row.name}
-          </Typography>
-        ),
-      },
-      {
-        id: 'discount_type',
-        label: 'Type',
-        width: 100,
-        render: (row) => (
-          <Typography variant="body2">
-            {row.discount_type === 'PERCENTAGE' ? 'Percentage' : 'Flat'}
-          </Typography>
-        ),
-      },
-      {
-        id: 'discount_value',
-        label: 'Value',
-        width: 100,
-        render: (row) => (
-          <Typography variant="body2">
-            {row.discount_value} {row.discount_type === 'PERCENTAGE' ? '%' : ''}
-          </Typography>
-        ),
-      },
-      {
-        id: 'validity',
-        label: 'Validity',
-        width: 200,
-        render: (row) => (
-          <Typography variant="caption" color="text.secondary">
-            {new Date(row.valid_from).toLocaleDateString()} -{' '}
-            {new Date(row.valid_till).toLocaleDateString()}
-          </Typography>
-        ),
-      },
-      {
-        id: 'uses',
-        label: 'Uses',
-        width: 100,
-        render: (row) => (
-          <Typography variant="body2">
-            {row.max_uses === 0 ? 'Unlimited' : row.max_uses}
+            {row.email_id}
           </Typography>
         ),
       },
@@ -120,6 +77,16 @@ export function CouponsPage() {
         ),
       },
       {
+        id: 'created_at',
+        label: 'Joined',
+        width: 150,
+        render: (row) => (
+          <Typography variant="body2">
+            {row.created_at ? new Date(row.created_at).toLocaleDateString() : '-'}
+          </Typography>
+        ),
+      },
+      {
         id: 'actions',
         label: 'Action',
         align: 'right',
@@ -129,7 +96,7 @@ export function CouponsPage() {
             size="small"
             onClick={(e) => {
               e.stopPropagation()
-              setMenuAnchor({ el: e.currentTarget, couponId: row.id })
+              setMenuAnchor({ el: e.currentTarget, memberId: row.id })
             }}
           >
             <MoreVert fontSize="small" />
@@ -145,38 +112,29 @@ export function CouponsPage() {
       <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <Stack spacing={0.5}>
           <Typography variant="h4" sx={{ fontWeight: 700 }}>
-            Coupons List
+            Delivery Partners
           </Typography>
           <Breadcrumbs aria-label="breadcrumb" sx={{ color: 'text.secondary' }}>
-            <Link component={RouterLink} to="/products" underline="hover" color="inherit">
+            <Link component={RouterLink} to="/" underline="hover" color="inherit">
               Dashboard
             </Link>
-            <Link component={RouterLink} to="/coupons" underline="hover" color="inherit">
-              Coupons
+            <Link component={RouterLink} to="/members" underline="hover" color="inherit">
+              Delivery Partners
             </Link>
           </Breadcrumbs>
           <Typography variant="body2" color="text.secondary">
             {totalLabel}
-            {couponsCount.error ? ' — count unavailable' : null}
+            {membersCount.error ? ' — count unavailable' : null}
           </Typography>
         </Stack>
-        <Button
-          component={RouterLink}
-          to="/coupons/new"
-          variant="contained"
-          startIcon={<AddIcon />}
-          sx={{ borderRadius: 2, px: 2.5 }}
-        >
-          Add Coupon
-        </Button>
       </Stack>
 
       <Card sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider', boxShadow: 'none' }}>
         <DataTable
           columns={columns}
-          rows={couponsList.data}
-          loading={couponsList.pending || couponsCount.pending}
-          totalCount={couponsCount.data}
+          rows={membersList.data}
+          loading={membersList.pending || membersCount.pending}
+          totalCount={membersCount.data}
           page={lastQuery.page_no}
           pageSize={lastQuery.page_size}
           onPageChange={(page) => dispatch(fetchPageRequest({ ...lastQuery, page_no: page }))}
@@ -196,7 +154,7 @@ export function CouponsPage() {
         <MenuItem
           onClick={() => {
             if (menuAnchor) {
-              navigate(`/coupons/${menuAnchor.couponId}/edit`)
+              navigate(`/members/${menuAnchor.memberId}/edit`)
             }
             setMenuAnchor(null)
           }}
