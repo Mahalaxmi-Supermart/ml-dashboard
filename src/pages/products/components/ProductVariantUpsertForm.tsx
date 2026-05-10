@@ -1,5 +1,5 @@
 import AddOutlined from '@mui/icons-material/AddOutlined'
-import DeleteOutlineOutlined from '@mui/icons-material/DeleteOutlineOutlined'
+import DeleteOutlined from '@mui/icons-material/DeleteOutlined'
 import TuneOutlined from '@mui/icons-material/TuneOutlined'
 import {
   Box,
@@ -324,7 +324,7 @@ export function ProductVariantUpsertForm({
                               disabled={fields.length <= 1 || pending}
                               size="small"
                             >
-                              <DeleteOutlineOutlined />
+                              <DeleteOutlined />
                             </IconButton>
                           </Grid>
                         </Grid>
